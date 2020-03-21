@@ -1,0 +1,18 @@
+version: "3"
+services:
+  unrealircd:
+    build:
+      context: unrealircd
+      args:
+        - hostuid=1000
+    networks:
+      default:
+        aliases:
+          - ircd
+    ports:
+      - "6667:6667"
+      - "6697:6697"
+    volumes:
+      - "./config/unrealircd:/home/irc/unrealircd/conf"
+      - "./data/unrealircd:/home/irc/unrealircd/data"
+      - "./logs/unrealircd:/home/irc/unrealircd/logs"

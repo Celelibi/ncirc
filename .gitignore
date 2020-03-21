@@ -1,0 +1,10 @@
+# Unrealircd logs
+/logs/unrealircd/ircd.log
+# Unrealircd pid files
+/data/unrealircd/unrealircd.pid
+/data/unrealircd/unrealircd.pid.bak
+# Unrealircd databases
+/data/unrealircd/ircd.tune
+/data/unrealircd/channel.db
+/data/unrealircd/tkl.db
+/data/unrealircd/reputation.db
