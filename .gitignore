@@ -8,3 +8,13 @@
 /data/unrealircd/channel.db
 /data/unrealircd/tkl.db
 /data/unrealircd/reputation.db
+
+
+# Anope logs
+/logs/anope/services.log.*
+# Anope pid files
+/data/anope/services.pid
+# Anope databases and backups
+/data/anope/anope.db
+/data/anope/anope.sqlite
+/data/anope/backups/anope.db-*

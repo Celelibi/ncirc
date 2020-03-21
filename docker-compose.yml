@@ -16,3 +16,21 @@ services:
       - "./config/unrealircd:/home/irc/unrealircd/conf"
       - "./data/unrealircd:/home/irc/unrealircd/data"
       - "./logs/unrealircd:/home/irc/unrealircd/logs"
+
+  anope:
+    build:
+      context: anope
+      args:
+        - hostuid=1000
+    depends_on:
+      - unrealircd
+    networks:
+      default:
+        aliases:
+          - services
+    ports:
+      - "7226:7226"
+    volumes:
+      - "./config/anope:/home/irc/services/conf"
+      - "./data/anope:/home/irc/services/data"
+      - "./logs/anope:/home/irc/services/logs"
