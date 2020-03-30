@@ -18,3 +18,7 @@
 /data/anope/anope.db
 /data/anope/anope.sqlite
 /data/anope/backups/anope.db-*
+
+
+# Pylink logs
+/logs/pylink/pylink-*.log

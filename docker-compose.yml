@@ -34,3 +34,19 @@ services:
       - "./config/anope:/home/irc/services/conf"
       - "./data/anope:/home/irc/services/data"
       - "./logs/anope:/home/irc/services/logs"
+
+  pylink:
+    build:
+      context: pylink
+      args:
+        - hostuid=1000
+    depends_on:
+      - unrealircd
+    networks:
+      default:
+        aliases:
+          - pylink
+    volumes:
+      - "./config/pylink:/home/irc/conf"
+      - "./data/pylink:/home/irc/data"
+      - "./logs/pylink:/home/irc/log"

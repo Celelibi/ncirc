@@ -1,5 +1,5 @@
 # NCIRC - IRCd dockerisé pour newbiecontest
-Ce repository contient les Dockerfile pour télécharger, compiler et install unrealircd et anope. Il contient aussi des fichiers de configuration de base qui fonctionnent.
+Ce repository contient les Dockerfile pour télécharger, compiler et installer un IRCd fonctionnel avec unrealircd et anope. Il télécharge et installe également PyLink. Il contient aussi des fichiers de configuration de base qui fonctionnent.
 
 ## Utilisation
     docker-compose up --build
@@ -7,7 +7,7 @@ Ce repository contient les Dockerfile pour télécharger, compiler et install un
 ## Architecture
 Pour n'avoir dans le conteneur final que les binaires nécessaires à l'exécution (et pas les sources ni les outils de compilation), le Dockerfile utilise un [build multi-stage](https://docs.docker.com/develop/develop-images/multistage-build/).
 
-L'image finale ne contient donc que le code binaire, pas la configuration. Celle-ci est dans le répertoire `config/{unrealircd,anope}` puis monté dans le conteneur. Il en est de même pour les données et pour les logs qui sont montés depuis `data/{unrealircd,anope}` et `logs/{unrealircd,anope}` respectivement.
+L'image finale ne contient donc que le code binaire, pas la configuration. Celle-ci est dans le répertoire `config/{unrealircd,anope,pylink}` puis monté dans le conteneur. Il en est de même pour les données et pour les logs qui sont montés depuis `data/{unrealircd,anope,pylink}` et `logs/{unrealircd,anope,pylink}` respectivement.
 
 ## Trucs important à configurer
 Normalement tout fonctionne directement. Cependant, pour des questions de sécurité, il y a quelques morceaux de configuration à changer.
@@ -16,9 +16,10 @@ Normalement tout fonctionne directement. Cependant, pour des questions de sécur
 - docker-compose: https://docs.docker.com/compose/compose-file/
 - Configuration d'unrealircd: https://www.unrealircd.org/docs/Configuration
 - Configuration d'anope: https://wiki.anope.org/index.php/2.0/Configuration
+- Documentation de PyLink: https://github.com/jlu5/PyLink/tree/master/docs
 
 ### UID d'exécution du service
-L'argument `hostuid=1000` dans le fichier `docker-compose.yml` indique l'UID avec lequel doit tourner l'IRCd et les services. Le faire coïncider avec l'UID des fichiers de l'hôte qui seront monté dans le conteneur est indispensable. Ne pas oublier de modifier les deux occurrences. C'est la seule chose à changer avant de lancer un :
+L'argument `hostuid=1000` dans le fichier `docker-compose.yml` indique l'UID avec lequel doit tourner l'IRCd et les services. Le faire coïncider avec l'UID des fichiers de l'hôte qui seront monté dans le conteneur est indispensable. Ne pas oublier de modifier les trois occurrences. C'est la seule chose à changer avant de lancer un :
 
     docker-compose build
 
@@ -33,12 +34,23 @@ Il en est de même pour anope dont le certificat et la clé doivent être placé
     cd data/anope
     openssl req -x509 -newkey rsa:4096 -keyout anope.key -out anope.crt -days 3650 -nodes
 
+Pareil pour PyLink.
+
+    cd data/pylink
+    openssl req -x509 -newkey rsa:4096 -keyout pylink-key.pem -out pylink-cert.pem -days 3650 -nodes
+
 ### Link des services
 Unrealircd peut utiliser un certificat client pour authentifier les serveurs qui se connectent à lui. La méthode *SPKIFP* utilise le fingerprint de la clé publique en tant que mot de passe. La commande suivante permet de le calculer.
 
     openssl x509 -in data/anope/anope.crt -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -binary | openssl enc -base64
 
 Cette commande produit un hash encodé en base64 qui doit être placé dans le bloc `uplink` du fichier `config/anope/services.conf`. Ainsi que dans le bloc `link` du fichier `config/unrealircd/unrealircd.conf`.
+
+Idem pour PyLink.
+
+    openssl x509 -in data/pylink/pylink-cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -binary | openssl enc -base64
+
+Le hash est à placer à la fois dans le fichier `config/pylink/pylink.yml` dans la config `servers::ncirc::sendpass`. Mais aussi dans le bloc `link` du fichier `config/unrealircd/unrealircd.conf`.
 
 ### Cloak keys
 Les *cloak keys* servent à chiffrer les adresses IP des clients. Il est important qu'elles soient uniques et stables dans le temps pour ne pas invalider tous les bans, excepts, invex et autres masques. Elles sont dans `config/unrealircd/unrealircd.conf` dans le premier bloc `set` et peuvent être générés avec cette commande.
