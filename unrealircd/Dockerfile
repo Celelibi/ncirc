@@ -1,6 +1,7 @@
 FROM alpine:latest AS builder
 LABEL maintainer="Celelibi <celelibi@gmail.com>"
-RUN apk upgrade && apk add build-base openssl openssl-dev
+RUN apk upgrade && apk add build-base
+RUN apk add openssl openssl-dev
 RUN apk add gnupg
 
 RUN adduser --disabled-password --gecos ircd irc
