@@ -25,6 +25,8 @@ RUN UNREALIRCDDIR=unrealircd-5.0.3.1 \
 FROM alpine:latest
 LABEL maintainer="Celelibi <celelibi@gmail.com>"
 ARG hostuid=1000
+
+RUN apk upgrade --no-cache
 RUN adduser --disabled-password --gecos ircd --uid $hostuid irc
 USER irc
 COPY --chown=irc:irc --from=builder /home/irc/unrealircd /home/irc/unrealircd

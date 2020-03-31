@@ -26,6 +26,7 @@ FROM alpine:latest
 LABEL maintainer="Celelibi <celelibi@gmail.com>"
 ARG hostuid=1000
 
+RUN apk upgrade --no-cache
 # openssl is only used for sendmail. See config/anope/services.conf:978
 RUN apk add --no-cache libgcc libstdc++ gettext sqlite-libs openssl
 
