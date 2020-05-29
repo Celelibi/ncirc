@@ -19,7 +19,6 @@ USER irc
 RUN mkdir -p $HOME/testing/pyyaml \
 	$HOME/testing/ircmatch \
 	$HOME/testing/passlib \
-	$HOME/testing/expiringdict \
 	$HOME/testing/pylinkirc
 
 COPY pyyaml.APKBUILD /home/irc/testing/pyyaml/APKBUILD
@@ -31,10 +30,6 @@ RUN cd testing/ircmatch && abuild checksum && abuild -r
 # Only useful to make pylink-mkpasswd work (optional)
 COPY passlib.APKBUILD /home/irc/testing/passlib/APKBUILD
 RUN cd testing/passlib && abuild checksum && abuild -r
-
-# Only useful for pylink's servprotect module (optional)
-COPY expiringdict.APKBUILD /home/irc/testing/expiringdict/APKBUILD
-RUN cd testing/expiringdict && abuild checksum && abuild -r
 
 COPY pylinkirc.APKBUILD /home/irc/testing/pylinkirc/APKBUILD
 RUN cd testing/pylinkirc && abuild checksum && abuild -r
@@ -52,12 +47,12 @@ COPY --chown=irc:irc --from=builder /home/irc/packages /home/irc/packages
 RUN echo /home/irc/packages/testing/ >> /etc/apk/repositories
 
 # Optional packages:
-# - py3-expiringdict for servprotect module
+# - py3-cachetools for servprotect module
 # - py3-passlib: used for pylink-mkpasswd to setup password config
 # - py3-psutil: used for cron-support module
 # - py3-unidecode: used (optionally) by the relay module
 RUN apk add --no-cache py3-pylinkirc \
-	py3-expiringdict \
+	py3-cachetools \
 	py3-passlib \
 	py3-psutil \
 	py3-unidecode

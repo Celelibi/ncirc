@@ -1,8 +1,10 @@
 # Contributor: Celelibi <celelibi@gmail.com>
 # Maintainer: Celelibi <celelibi@gmail.com>
 _pyname="pylinkirc"
+_ghname="PyLink"
+_ghver="2.1-beta1"
 pkgname="py3-$_pyname"
-pkgver="2.0.3"
+pkgver=${_ghver/-/_}
 pkgrel=0
 pkgdesc="PyLink IRC Services"
 url="https://github.com/jlu5/PyLink"
@@ -12,8 +14,8 @@ depends="python3 py3-pyyaml py3-ircmatch"
 makedepends="py3-setuptools"
 install=""
 subpackages=""
-source="https://files.pythonhosted.org/packages/source/${_pyname%${_pyname#?}}/$_pyname/$_pyname-$pkgver.tar.gz"
-builddir="$srcdir/$_pyname-$pkgver"
+source="$_ghname-$_ghver.tar.gz::https://github.com/jlu5/$_ghname/archive/$_ghver.tar.gz"
+builddir="$srcdir/$_ghname-$_ghver"
 
 # Tests fail to import pylinkirc
 options="!check"
