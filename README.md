@@ -10,7 +10,7 @@ Pour n'avoir dans le conteneur final que les binaires nécessaires à l'exécuti
 L'image finale ne contient donc que le code binaire, pas la configuration. Celle-ci est dans le répertoire `config/{unrealircd,anope,pylink}` puis monté dans le conteneur. Il en est de même pour les données et pour les logs qui sont montés depuis `data/{unrealircd,anope,pylink}` et `logs/{unrealircd,anope,pylink}` respectivement.
 
 ## Trucs important à configurer
-Normalement tout fonctionne directement. Cependant, pour des questions de sécurité, il y a quelques morceaux de configuration à changer.
+Normalement le serveur IRC et les services fonctionnent directement. Cependant, pour des questions de sécurité, il y a quelques morceaux de configuration à changer pour l'IRCd et les services, et quelques commandes pour lier le chan IRC avec le chan discord.
 
 ### Documentation de référence
 - docker-compose: https://docs.docker.com/compose/compose-file/
@@ -76,6 +76,22 @@ Du côté d'Anope c'est uniquement un pseudo à changer dans le bloc `oper` qui 
 
 Pour enregistrer son pseudo avec NickServ, l'IRCOp doit être d'abord authentifié en tant qu'IRCOp via la commande `/oper Nick MotDePasse`.
 
+### Admin PyLink
+Le pseudo et mot de passe de l'admin PyLink doivent être configurés dans `config/pylink/pylink.yml` dans le bloc `login`. Le mot de passe chiffré peut l'être avec la commande `mkpasswd` ou avec:
+
+    docker-compose run --rm pylink pylink-mkpasswd
+
+### Création d'un bot discord
+https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
+
+Le bot a besoin des permissions *"Send Message"*, *"Change Nickname"* et *"Manage Webhooks"*. Soit des permissions au moins égales à `603981824`.
+
+Le token d'accès doit être placé dans le fichier `config/pylink/pylink.yml` dans `servers::dsc::token`. Le guild ID du serveur discord de NewbieContest est `376764304202137600` et est déjà configuré dans le fichier.
+
+
+## Configuration à l'exécution
+Quelques trucs à configurer une fois que ça tourne.
+
 ### Chans à enregistrer
 Sur `#services`, les services balance leurs logs en continue. Il devrait être accessible uniquement aux IRCOps. Le chan `#help` est référencé de manière explicite dans la configuration et devrait être enregistré et configuré proprement.
 
@@ -88,3 +104,16 @@ Sur `#services`, les services balance leurs logs en continue. Il devrait être a
     /msg ChanServ register #help Chan d'aide
     /msg ChanServ set noexpire #help on
     /msg ChanServ set persist #help on
+
+### Link des chans IRC et discord
+Se loguer auprès du bot `PyLink` du côté IRC et créer le chan de relais. Il est conseillé d'avoir préalablement enregistré le chan IRC auprès de ChanServ.
+
+    /msg PyLink identify Nick MotDePasse
+    /msg PyLink create #newbiecontest
+
+Se loguer après du bot du côté discord et linker le chan discord au chan relais en disant en privé au bot:
+
+    identify Nick MotDePasse
+    link ncirc #newbiecontest 379173390482800641
+
+L'ID `379173390482800641` correspond au channel d'accueil de newbiecontest. Pour linker d'autres chans il faut récupérer leur ID, soit dans l'URL via l'interface web, soit en [activant le mode développeur](https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-).

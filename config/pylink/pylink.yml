@@ -57,7 +57,7 @@ pylink:
     # Defines extra directories to look up plugins and protocol modules in.
     # Environment variables (e.g. $HOME) and home folders (~) are expanded here, in that order.
     #plugin_dirs: ["~/my-plugins", "~/pylink-contrib-modules/plugins"]
-    #protocol_dirs: ["~/pylink-contrib-modules/protocols"]
+    protocol_dirs: ["/usr/lib/python3.8/site-packages/pylink-discord/protocols"]
 
     # Determines whether service bots should return unknown command errors. Defaults to true if not
     # speciifed.
@@ -299,15 +299,84 @@ servers:
         #games_host: games.mynet.net
         #games_realname: Magic Games Service
 
+    dsc:
+        token: "TheBotToken"
+        netname: "Discord"
+        protocol: "discord"
+
+        # This protocol module uses IDs for configuring servers, channels, and the like.
+        # You can easily find IDs by turning on Developer Mode in Discord:
+        # https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-
+
+        # Define a list of guilds (servers) and their settings.
+        guilds:
+            # Set this to the ID of your server - you can find it by enabling Developer Mode and right clicking
+            # your server's icon in the server list
+            376764304202137600:
+                # The name to use for this guild in PyLink. This should be different from any other networks you've specified
+                # in your config. If you're only relaying to one guild, setting this to "discord" is a pretty safe bet.
+                name: ncdsc
+
+                # Toggles username spoofing via webhooks for a more transparent relay experience. This requires the bot to have
+                # the Manage Webhooks permission, and defaults to false if not set.
+                use_webhooks: true
+
+                # If disabled, users that are marked as "Invisible" or "Offline" will not be joined to
+                # linked channels until they come online. This can be useful if you have many offline users compared
+                # to online ones. Note that if this is disabled, PMs cannot be sent to offline Discord users
+                # Changes to this setting require a restart to apply. This defaults to true if not set.
+                join_offline_users: true
+
+                # Optional: map a list of roles to IRC modes. You can find role IDs by enabling Developer Mode
+                # and right clicking a role in the user info pane or Roles configuration page.
+#                role_mode_map:
+#                    123456789012345678: op
+#                    001122334455667788: voice
+
+        # Sets whether we should burst Discord guild owners as IRC owners
+        show_owner_status: true
+
+        # Sets the format for usernames when using webhooks: supported fields include user fields
+        # ($nick, $ident, $host, etc.) as well as the network name ($netname) and short network tag ($nettag)
+        webhook_user_format: "<$nick>"
+
+        # Sets the format used when relaying PMs from IRC to Discord. The same fields as webhook_user_format
+        # apply, plus $text (the contents of the message).
+        pm_format: "<$nick> $text"
+
+        # Here you can set how edited channel messages are formatted. Edited messages are re-broadcasted
+        # as a separate message, in terms of Relay and PyLink commands. If this is empty, edited messages will
+        # be sent without any additional changes.
+        editmsg_format: "\x02Edit:\x02 %s"
+
+        # Determines whether the bot will send @here and @everyone when relaying messages. This is disabled by
+        # default to prevent people from spamming these triggers fairly easily.
+        allow_mention_everyone: true
+
+        # You can associate IRC services accounts with preferred avatar URLs. Currently this is
+        # quite limited and requires hardcoding things in the config; eventually there may be
+        # a self-service process to do this.
+        #
+        # Gravatar emails in the form "gravatar:some@email.com" are supported if libgravatar is installed.
+        # http:// and https:// URLs also work.
+#        avatars:
+#            user1: "gravatar:user1@example.com"
+#            abcd: "https://abcd.example.com/avatar.png"
+
+        # For users without an avatar set, you can use a default avatar URL (http or https).
+        # If this is unset, the bot will just use the default webhook icon (which you can customize
+        # per channel if desired).
+        #default_avatar_url: "https://overdrivenetworks.com/relaypic.png"
+
 
 # Plugins to load (omit the .py extension)
 plugins:
     # Commands plugin: Provides simple commands to check login status, show info on users and
     # channels, etc.
-    #- commands
+    - commands
 
     # Networks plugin: Allows you to manage connections to networks while PyLink is running.
-    #- networks
+    - networks
 
     # Ctcp plugin: handles basic CTCP replies (VERSION, etc) towards service bots.
     - ctcp
@@ -318,12 +387,12 @@ plugins:
 
     # Relay plugin: Transparent server-side relay between channels (like Janus). See
     # the relay: block below for configuration.
-    #- relay
+    - relay
 
     # Relay Clientbot plugin: this allows channel messages and events like
     # JOIN, PART, KICK, etc. to relay over networks using Clientbot. You will
     # want this loaded if you're using PyLink as a relay bot.
-    #- relay_clientbot
+    - relay_clientbot
 
     # Fantasy plugin: Allows you to trigger commands in channels by prefixing them
     # with the PyLink service's nick or configurable prefix characters.
@@ -532,7 +601,7 @@ relay:
     # This determines whether private messages & notices will be forwarded over Clientbot relay,
     # and whether the 'rpm' command will be allowed from Clientbot networks. This defaults to
     # False.
-    allow_clientbot_pms: false
+    allow_clientbot_pms: true
 
     # Sets whether Clientbot mode sync will be enabled. Valid options:
     # "full" - Sync bans, ban/invite exceptions, prefix modes, and all RFC1459-standard modes. The
