@@ -38,12 +38,6 @@ RUN mkdir -p $HOME/testing/holster
 COPY holster.APKBUILD /home/irc/testing/holster/APKBUILD
 RUN cd testing/holster && abuild checksum && abuild -r
 
-# XXX temporary until alpine upgrade to gevent 1.5.0
-# Required by pylink-discord and disco-py
-RUN mkdir -p $HOME/testing/gevent
-COPY gevent.APKBUILD /home/irc/testing/gevent/APKBUILD
-RUN cd testing/gevent && abuild checksum && abuild -r
-
 # Required by pylink-discord
 RUN mkdir -p $HOME/testing/disco-py
 COPY disco-py.APKBUILD /home/irc/testing/disco-py/APKBUILD
