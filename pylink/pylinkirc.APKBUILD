@@ -2,7 +2,7 @@
 # Maintainer: Celelibi <celelibi@gmail.com>
 _pyname="pylinkirc"
 _ghname="PyLink"
-_ghver="2.1-beta1"
+_ghver="3.0.0"
 pkgname="py3-$_pyname"
 pkgver=${_ghver/-/_}
 pkgrel=0
