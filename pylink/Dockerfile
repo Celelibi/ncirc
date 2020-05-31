@@ -31,7 +31,7 @@ RUN cd testing/passlib && abuild checksum && abuild -r
 
 RUN mkdir -p $HOME/testing/pylinkirc
 COPY pylinkirc.APKBUILD /home/irc/testing/pylinkirc/APKBUILD
-RUN cd testing/pylinkirc && abuild checksum && abuild -r
+RUN cd testing/pylinkirc && abuild snapshot && abuild checksum && abuild -r
 
 # Required by pylink-discord
 RUN mkdir -p $HOME/testing/holster
