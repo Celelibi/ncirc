@@ -20,5 +20,7 @@
 /data/anope/backups/anope.db-*
 
 
-# Pylink logs
+# PyLink logs
 /logs/pylink/pylink-*.log
+# PyLink database
+/data/pylink/pylinkrelay.db

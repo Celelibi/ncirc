@@ -49,4 +49,4 @@ services:
     volumes:
       - "./config/pylink:/home/irc/conf"
       - "./data/pylink:/home/irc/data"
-      - "./logs/pylink:/home/irc/log"
+      - "./logs/pylink:/home/irc/logs"
