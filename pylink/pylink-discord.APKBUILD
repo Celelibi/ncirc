@@ -53,15 +53,7 @@ package() {
 	dest=$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')
 	install -m 0755 -d "$pkgdir/usr/bin"
 	install -m 0755 -t "$pkgdir/usr/bin" pylink-discord
-	install -m 0755 -d "$pkgdir$dest/$_pyname/protocols"
-	install -m 0644 -t "$pkgdir$dest/$_pyname/protocols" protocols/*
-	echo "############################################################"
-	echo "############################################################"
-	echo "############################################################"
-	echo "Don't forget to add $dest/$_pyname/protocols to your pylink.yml config file"
-	echo "in the option pylink/protocol_dirs."
-	echo "############################################################"
-	echo "############################################################"
-	echo "############################################################"
+	install -m 0755 -d "$pkgdir$dest/pylinkirc/protocols"
+	install -m 0644 -t "$pkgdir$dest/pylinkirc/protocols" protocols/*
 }
 

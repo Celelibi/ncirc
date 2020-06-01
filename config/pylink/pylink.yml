@@ -57,7 +57,6 @@ pylink:
     # Defines extra directories to look up plugins and protocol modules in.
     # Environment variables (e.g. $HOME) and home folders (~) are expanded here, in that order.
     #plugin_dirs: ["~/my-plugins", "~/pylink-contrib-modules/plugins"]
-    protocol_dirs: ["/usr/lib/python3.8/site-packages/pylink-discord/protocols"]
 
     # Determines whether service bots should return unknown command errors. Defaults to true if not
     # speciifed.
