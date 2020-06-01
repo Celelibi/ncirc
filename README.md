@@ -117,3 +117,44 @@ Se loguer après du bot du côté discord et linker le chan discord au chan rela
     link ncirc #newbiecontest 379173390482800641
 
 L'ID `379173390482800641` correspond au channel d'accueil de newbiecontest. Pour linker d'autres chans il faut récupérer leur ID, soit dans l'URL via l'interface web, soit en [activant le mode développeur](https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-).
+
+
+# Autre configuration possible
+Il y a beaucoup d'autre choses configurables, dont quelques options / features notables. Certaines sont déjà configurées mais mérite d'être mentionnées.
+
+## Unrealircd
+- Configuration des [droits d'accès des IRCOp](https://www.unrealircd.org/docs/Operclass_permissions).
+- Ban selon des [blacklist](https://www.unrealircd.org/docs/Blacklist_block) d'host connus.
+- Features de modération: [kill / ban serveur](https://www.unrealircd.org/docs/IRCOp_guide#Killing_and_banning_users_from_the_server) selon différent critères
+- [Spamfilter](https://www.unrealircd.org/docs/Spamfilter) pour réagir à des messages suivant des regex et bloquer / bannir / killer le user.
+- [Anti-flood](https://www.unrealircd.org/docs/Set_block#set::anti-flood::connect-flood) de connexion / changement de nick / messages / invitations / ...
+- Détection et modération des [nick random](https://www.unrealircd.org/docs/Set_block#set::antirandom).
+- Détection et modération des messages [mélangeant les *script unicode*](https://www.unrealircd.org/docs/Set_block#set::antimixedutf8).
+- Stocker et rejouer [les dernières lignes d'un chan](https://www.unrealircd.org/docs/Channel_history).
+- Support de [WebIRC](https://www.unrealircd.org/docs/WebIRC_Support).
+
+## Anope
+- Ajout de champs d'infomation quelconque associé aux [nicks](https://wiki.anope.org/index.php/2.0/Modules/ns_set_misc) ou [chans](https://wiki.anope.org/index.php/2.0/Modules/cs_set_misc).
+- Gestion fine des [accès ChanServ](https://www.anope.org/docgen/1.8/en_us/ChanServ.html)
+- Service d'envoi de [messages persistants](https://www.anope.org/docgen/1.8/en_us/MemoServ.html).
+- Service de [personnalisation du hostname](https://www.anope.org/docgen/1.8/en_us/HostServ.html).
+- Configuration des [commandes autorisées aux opérateurs de services](https://wiki.anope.org/index.php/2.0/Configuration#Opertypes).
+- Bans enregistrés de manère permanente: Les [AKILL](https://wiki.anope.org/index.php/2.0/Modules/os_akill).
+- Des niveau de [DEFCON](https://wiki.anope.org/index.php/2.0/Modules/os_defcon) pour réagir vite en cas d'attaque.
+- Stockage des infos des user / chan dans [DB SQL](https://wiki.anope.org/index.php/2.0/Modules/m_sql) (MySQL, redis, ou SQLite).
+- Authentification via [LDAP](https://wiki.anope.org/index.php/2.0/Modules/m_ldap_authentication) ou [SQL](https://wiki.anope.org/index.php/2.0/Modules/m_sql_authentication) avec des requêtes personnalisées.
+
+## PyLink
+- Linker des chans de plusieurs réseaux IRC.
+- Peut se connecter aux serveurs IRC en tant que serveur ou en tant que bot client.
+- Limiter les permissions des comptes qui peuvent administrer PyLink.
+- Fait suivre les modes.
+- Le tag du réseau à la fin des users virtuels est optionnel.
+
+## PyLink discord
+- (Dés)activation des mention @here @everyone.
+- Map les rôles discord sur les modes IRC (voice, halfop, op, ...).
+- Montre (ou pas) comme connectés sur IRC les users discord offline / invisibles.
+- Gère les messages privés IRC <-> discord.
+- Gère l'édition des messages.
+- Support (limité) des avatars discord pour les utilisateurs IRC.
