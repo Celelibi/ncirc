@@ -50,7 +50,7 @@ RUN cd testing/libgravatar && abuild checksum && abuild -r
 
 RUN mkdir -p $HOME/testing/pylink-discord
 COPY pylink-discord.APKBUILD /home/irc/testing/pylink-discord/APKBUILD
-RUN cd testing/pylink-discord && abuild checksum && abuild -r
+RUN cd testing/pylink-discord && abuild snapshot && abuild checksum && abuild -r
 
 
 
