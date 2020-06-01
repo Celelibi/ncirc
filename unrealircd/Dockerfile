@@ -7,7 +7,7 @@ RUN apk add gnupg
 RUN adduser --disabled-password --gecos ircd irc
 USER irc
 WORKDIR /home/irc
-RUN UNREALIRCDDIR=unrealircd-5.0.3.1 \
+RUN UNREALIRCDDIR=unrealircd-5.0.5.1 \
 	&& UNREALIRCDSRC=$UNREALIRCDDIR.tar.gz \
 	&& UNREALIRCDSRC_URL=https://www.unrealircd.org/downloads/$UNREALIRCDSRC \
 	&& wget $UNREALIRCDSRC_URL $UNREALIRCDSRC_URL.asc \
